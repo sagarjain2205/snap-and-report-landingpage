@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; background: #050816; color-scheme: dark; }
+body { @apply bg-void text-ink font-sans antialiased; overflow-x: hidden; }
+h1, h2, h3 { @apply font-display; letter-spacing: -0.02em; }
+:focus-visible { outline: 2px solid #22D3EE; outline-offset: 3px; }
+::selection { background: rgba(139, 92, 246, 0.55); color: #fff; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #050816; }
+::-webkit-scrollbar-thumb { background: linear-gradient(#4F7CFF, #8B5CF6); border-radius: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+.wrap { @apply mx-auto w-full max-w-6xl px-5 sm:px-8; }
+.sect { @apply relative py-20 sm:py-28; }
+.lead { @apply mt-5 max-w-xl text-base sm:text-lg text-mute leading-relaxed; }
+
+/* Headlines: light-to-blue gradient across the whole line, slowly shimmering */
+.h2 {
+  @apply text-3xl sm:text-5xl font-extrabold leading-[1.05];
+  background: linear-gradient(100deg, #ffffff 0%, #bcd0ff 35%, #22D3EE 55%, #bcd0ff 75%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: shimmer 8s linear infinite;
+}
+.h1-fx {
+  background: linear-gradient(100deg, #ffffff 0%, #8fb0ff 25%, #22D3EE 45%, #8B5CF6 65%, #ffffff 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: shimmer 5s linear infinite;
+  filter: drop-shadow(0 0 28px rgba(79, 124, 255, 0.35));
+}
+
+/* Glass cards */
+.glass {
+  background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px -30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Rotating neon border (used on the hero screenshot) */
+.neon-frame { position: relative; border-radius: 1rem; padding: 2px; overflow: hidden; }
+.neon-frame::before {
+  content: ''; position: absolute; inset: -150%;
+  background: conic-gradient(from 0deg, #22D3EE, #4F7CFF, #8B5CF6, #E879F9, #2EF2D0, #22D3EE);
+  animation: spin360 5s linear infinite;
+}
+.neon-frame > * { position: relative; border-radius: calc(1rem - 2px); }
+.neon-frame::after {
+  content: ''; position: absolute; inset: 0; border-radius: 1rem;
+  box-shadow: 0 0 60px 6px rgba(79,124,255,0.35), 0 0 120px 20px rgba(139,92,246,0.2);
+  pointer-events: none;
+}
+
+/* CTA card with animated gradient */
+.cta-card {
+  background: linear-gradient(120deg, #1d3fd6, #6d3df0, #0ea5c6, #4F7CFF);
+  background-size: 300% 300%;
+  animation: ctaShift 9s ease-in-out infinite;
+  box-shadow: 0 0 80px -10px rgba(79,124,255,0.6);
+}
+.cta-card::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+  animation: grid 2s linear infinite;
+}
+.cta-card > * { position: relative; }
+@keyframes ctaShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+/* Scan line over screenshots (AI feel) */
+.scan::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 90px; pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(34,211,238,0.28), transparent);
+  border-bottom: 1px solid rgba(34,211,238,0.7);
+  animation: scan 3.2s linear infinite;
+}
+
+/* ---------- Animated background layers ---------- */
+.bg-orb { position: absolute; border-radius: 9999px; filter: blur(90px); opacity: 0.55; will-change: transform; animation: drift 22s ease-in-out infinite; }
+.bg-grid {
+  position: absolute; left: -50%; right: -50%; bottom: -5%; height: 75%;
+  background-image:
+    linear-gradient(rgba(79,124,255,0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,211,238,0.30) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(420px) rotateX(62deg);
+  transform-origin: center bottom;
+  animation: grid 2.4s linear infinite;
+  mask-image: linear-gradient(to top, #000 5%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to top, #000 5%, transparent 80%);
+  opacity: 0.55;
+}
+.bg-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 40%, rgba(5,8,22,0.85) 100%); }
+.bg-noise {
+  position: absolute; inset: 0; opacity: 0.06; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
